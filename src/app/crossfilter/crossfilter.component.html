@@ -1,0 +1,265 @@
+<div class="container-fluid">
+  <div class="charts row">
+    <div class="col-8">
+      <app-scatter
+        [data]="scatterData"
+        [xAccessor]="xAccessor"
+        [yAccessor]="yAccessor"
+        [colorAccessor]="zAccessor"
+        [xLabel]="axis1"
+        [yLabel]="axis2"
+        (interact)="updateInfo($event)">
+      </app-scatter>
+    </div>
+    <div class="col-4">
+      <div class="controls">
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="xAccessor">X Axis</label>
+            <select class="form-control" id="xAccessor" [(ngModel)]="axis1">
+              <option value="Mass">Measured Mass</option>
+              <option value="DoubleBonds">Double Bond Index</option>
+              <option value="Cindex">Carbon Index</option>
+              <option value="Intensity">Intensity</option>
+              <option value="ppmError">ppmError</option>
+              <option value="RetentionTime">RetentionTime</option>
+              <option value="Hydroxlys">HydroxylIndex</option>
+            </select>
+          </div>
+          <div class="form-group col-6">
+            <label for="yAccessor">Y Axis</label>
+            <select class="form-control" id="yAccessor" [(ngModel)]="axis2">
+              <option value="Mass">Measured Mass</option>
+              <option value="DoubleBonds">Double Bond Index</option>
+              <option value="Cindex">Carbon Index</option>
+              <option value="Intensity">Intensity</option>
+              <option value="ppmError">ppmError</option>
+              <option value="RetentionTime">RetentionTime</option>
+              <option value="Hydroxlys">HydroxylIndex</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="LipidClass">Lipid Class</label>
+            <input
+              id="LipidClass"
+              type="text"
+              class="form-control"
+              [(ngModel)]="lipidClass"
+              [ngbTypeahead]="searchLipidClasses"
+              (focus)="focusLipidClasses$.next($any($event).target.value)"
+              (click)="clickLipidClasses$.next($any($event).target.value)"
+              #lipidClasses="ngbTypeahead"
+            />
+          </div>
+          <div class="form-group col-6">
+            <label for="LipidSpecies">Lipid Species</label>
+            <input
+              id="LipidSpecies"
+              type="text"
+              class="form-control"
+              [(ngModel)]="lipidSpecies"
+              [ngbTypeahead]="searchLipidspecies"
+              (focus)="focusLipidspecies$.next($any($event).target.value)"
+              (click)="clickLipidspecies$.next($any($event).target.value)"
+              #lipidspecies="ngbTypeahead"
+            />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="adduct">Adduct</label>
+            <input
+              id="adduct"
+              type="text"
+              class="form-control"
+              [(ngModel)]="adduct"
+              [ngbTypeahead]="searchLipidadducts"
+              (focus)="focusLipidadducts$.next($any($event).target.value)"
+              (click)="clickLipidadducts$.next($any($event).target.value)"
+              #lipidadducts="ngbTypeahead"
+            />
+          </div>
+          <div class="form-group col-6">
+            <label for="raw_id"> RAW ID</label>
+            <input type="text" class="form-control" id="raw_id" [(ngModel)]="raw_id">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-4">
+            <div class="slidecontainer">
+              <label for="MassFilter">Mass Filter ({{massFilter}})</label>
+              <input type="range" min="300" max="1000" value="50" class="slider" id="MassFilter" [(ngModel)]="massFilter">
+            </div>
+          </div>
+          <div class="form-group col-4">
+            <div class="slidecontainer">
+              <label for="intensityThreshold">Intensity Filter ({{intensityFilter}})</label>
+              <input type="range" min="100" max="1000000" value="500" class="slider" id="intensityThreshold" [(ngModel)]="intensityFilter">
+            </div>
+          </div>
+          <div class="form-group col-4">
+            <div class="slidecontainer">
+              <label for="errorThreshold">Error Threshold ({{errorThreshold}})</label>
+              <input type="range" min="-2" max="2" value="0" class="slider" id="errorThreshold" [(ngModel)]="errorThreshold">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="gridCheck">
+            <label class="form-check-label" for="gridCheck">
+              Save Analysis
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-info" (click)="change()" [disabled]="refreshInProgress">
+            <i class="fa fa-refresh" *ngIf="!refreshInProgress"></i>
+            <i class="fa fa-refresh fa-spin" *ngIf="refreshInProgress"></i>
+            Refresh
+          </button>
+          <button class="btn btn-info ml-3" (click)="analyze()" [disabled]="analysisInProgress">
+            <i class="fa fa-flask" *ngIf="!analysisInProgress"></i>
+            <i class="fa fa-refresh fa-spin" *ngIf="analysisInProgress"></i>
+            Analyze
+          </button>
+        </div>
+        <div class="legend info-box">
+          <div><strong>Legend</strong></div>
+          <span *ngFor="let c of colors | keyvalue" class="entry">
+            <span class="dot" [ngStyle]="{'background': c.value}"></span>
+            {{c.key}}
+          </span>
+        </div>
+        <div class="info-box" *ngIf="info">
+          <div><strong>Info</strong></div>
+          <table>
+            <tr>
+              <th>Mass</th>
+              <th>Intensity</th>
+              <th>Retention Time</th>
+            </tr>
+            <tr>
+              <td>{{info.Mass}}</td>
+              <td>{{info.Intensity}}</td>
+              <td>{{info.Adduct}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="charts row" *ngIf="peakframeData.length > 0">
+    <div class="col-6">
+      <app-profile
+        [data]="peakData"
+        [label]="'Profile'"
+        [xAccessor]="getAccessor('Mass')"
+        [yAccessor]="getAccessor('Intensity')"
+        [colorAccessor]="zAccessor"
+        (interact)="updateInfo($event)">
+      </app-profile>
+    </div>
+    <div class="col-6">
+      <app-profile
+        [data]="peakData2"
+        [label]="'Profile'"
+        [xAccessor]="getAccessor('Mass')"
+        [yAccessor]="getAccessor('Intensity')"
+        [colorAccessor]="zAccessor"
+        (interact)="updateInfo($event)">
+      </app-profile>
+    </div>
+  </div>
+  <div class="charts row" *ngIf="peakframeData.length > 0">
+    <div class="col-6">
+      <app-profile
+        [data]="peakData3"
+        [label]="'Profile'"
+        [xAccessor]="getAccessor('Mass')"
+        [yAccessor]="getAccessor('Intensity')"
+        [colorAccessor]="zAccessor"
+        (interact)="updateInfo($event)">
+      </app-profile>
+    </div>
+    <div class="col-6">
+      <app-profile
+        [data]="peakData4"
+        [label]="'Profile'"
+        [xAccessor]="getAccessor('Mass')"
+        [yAccessor]="getAccessor('Intensity')"
+        [colorAccessor]="zAccessor"
+        (interact)="updateInfo($event)">
+      </app-profile>
+
+    </div>
+  </div>
+  <div class="charts row" *ngIf="peakframeData.length > 0">
+    <div class="col-6">
+      <app-profile
+        [data]="peakData5"
+        [label]="'Profile'"
+        [xAccessor]="getAccessor('Mass')"
+        [yAccessor]="getAccessor('Intensity')"
+        [colorAccessor]="zAccessor"
+        (interact)="updateInfo($event)">
+      </app-profile>
+    </div>
+    <div class="col-6">
+      <app-profile
+        [data]="peakData6"
+        [label]="'Profile'"
+        [xAccessor]="getAccessor('Mass')"
+        [yAccessor]="getAccessor('Intensity')"
+        [colorAccessor]="zAccessor"
+        (interact)="updateInfo($event)">
+      </app-profile>
+    </div>
+  </div>
+  <div class="charts row" *ngIf="peakframeData.length > 0">
+    <div class="col-6">
+      <app-profile
+        [data]="peakData7"
+        [label]="'Profile'"
+        [xAccessor]="getAccessor('Mass')"
+        [yAccessor]="getAccessor('Intensity')"
+        [colorAccessor]="zAccessor"
+        (interact)="updateInfo($event)">
+      </app-profile>
+    </div>
+    <div class="col-6">
+      <app-profile
+        [data]="peakData8"
+        [label]="'Profile'"
+        [xAccessor]="getAccessor('Mass')"
+        [yAccessor]="getAccessor('Intensity')"
+        [colorAccessor]="zAccessor"
+        (interact)="updateInfo($event)">
+      </app-profile>
+    </div>
+  </div>
+  <div class="charts row" *ngIf="peakframeData.length > 0">
+    <div class="col-6">
+      <app-profile
+        [data]="peakData9"
+        [label]="'Profile'"
+        [xAccessor]="getAccessor('Mass')"
+        [yAccessor]="getAccessor('Intensity')"
+        [colorAccessor]="zAccessor"
+        (interact)="updateInfo($event)">
+      </app-profile>
+    </div>
+    <div class="col-6">
+      <app-profile
+        [data]="peakData10"
+        [label]="'Profile'"
+        [xAccessor]="getAccessor('Mass')"
+        [yAccessor]="getAccessor('Intensity')"
+        [colorAccessor]="zAccessor"
+        (interact)="updateInfo($event)">
+      </app-profile>
+    </div>
+  </div>
+</div>

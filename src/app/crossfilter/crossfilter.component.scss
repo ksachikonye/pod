@@ -1,0 +1,31 @@
+.charts {
+  padding-left: 300px;
+  padding-right: 300px;
+}
+
+.controls {
+  padding-top: 50px;
+}
+
+.legend {
+
+  >span {
+    margin-right: 10px;
+  }
+
+  .entry {
+  }
+
+  .dot {
+    border: 1px solid black;
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+    border-radius: 10px;
+  }
+
+}
+
+.info-box {
+  margin-top: 10px;
+}

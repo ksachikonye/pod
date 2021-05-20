@@ -1,0 +1,94 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2" *ngIf="!token">
+      <div class="container-fluid">
+        <div class="charts row">
+          <div class="col-6">
+            <app-profile
+              [data]="profileData"
+              [label]="'Profile'"
+              [xAccessor]="getAccessor('Mass')"
+              [yAccessor]="getAccessor('Intensity')">
+            </app-profile>
+          </div>
+          <div class="col-6 text-truncate">
+            <div class="legend info-box">
+              <p class="heading font-weight-bold">Metrics</p>
+              <p class="rhr font-weight-normal">Resting Heart Rate <span class="badge badge-primary even-larger-badge">56 bpm</span></p>
+              <p class="hrv font-weight-normal">Heart Rate Variability <span class="badge badge-primary even-larger-badge">66 ms</span></p>
+              <p class="rr font-weight-normal">Respiratory Rate<span class="badge badge-primary even-larger-badge"> 16.2 pm</span></p>
+              <p class="rt font-weight-normal">Recovery Time <span class="badge badge-primary even-larger-badge">Optimal</span></p>
+            </div>
+          </div>
+        </div>
+        <div class="charts row">
+          <div class="col-6">
+            <app-profile
+              [data]="profileData"
+              [label]="'Profile'"
+              [xAccessor]="getAccessor('Mass')"
+              [yAccessor]="getAccessor('Intensity')">
+            </app-profile>
+          </div>
+          <div class="col-6 text-truncate">
+            <div class="legend info-box">
+              <p class="heading font-weight-bold">Metrics</p>
+              <p class="rhr font-weight-normal">Resting Heart Rate <span class="badge badge-primary even-larger-badge">56 bpm</span></p>
+              <p class="hrv font-weight-normal">Heart Rate Variability <span class="badge badge-primary even-larger-badge">66 ms</span></p>
+              <p class="rr font-weight-normal">Respiratory Rate<span class="badge badge-primary even-larger-badge"> 16.2 pm</span></p>
+              <p class="rt font-weight-normal">Recovery Time <span class="badge badge-primary even-larger-badge">Optimal</span></p>
+            </div>
+          </div>
+        </div>
+        <div class="charts row">
+          <div class="col-6">
+            <app-profile
+              [data]="profileData"
+              [label]="'Profile'"
+              [xAccessor]="getAccessor('Mass')"
+              [yAccessor]="getAccessor('Intensity')">
+            </app-profile>
+          </div>
+          <div class="col-6 text-truncate">
+            <div class="legend info-box">
+              <p class="heading font-weight-bold">Metrics</p>
+              <p class="rhr font-weight-normal">Resting Heart Rate <span class="badge badge-primary even-larger-badge">56 bpm</span></p>
+              <p class="hrv font-weight-normal">Heart Rate Variability <span class="badge badge-primary even-larger-badge">66 ms</span></p>
+              <p class="rr font-weight-normal">Respiratory Rate<span class="badge badge-primary even-larger-badge"> 16.2 pm</span></p>
+              <p class="rt font-weight-normal">Recovery Time <span class="badge badge-primary even-larger-badge">Optimal</span></p>
+            </div>
+          </div>
+        </div>
+        <div class="charts row">
+          <div class="col-6">
+            <app-profile
+              [data]="profileData"
+              [label]="'Profile'"
+              [xAccessor]="getAccessor('Mass')"
+              [yAccessor]="getAccessor('Intensity')">
+            </app-profile>
+          </div>
+          <div class="col-6 text-truncate">
+            <div class="legend info-box">
+              <p class="heading font-weight-bold">Metrics</p>
+              <p class="rhr font-weight-normal">Resting Heart Rate <span class="badge badge-primary even-larger-badge">56 bpm</span></p>
+              <p class="hrv font-weight-normal">Heart Rate Variability <span class="badge badge-primary even-larger-badge">66 ms</span></p>
+              <p class="rr font-weight-normal">Respiratory Rate<span class="badge badge-primary even-larger-badge"> 16.2 pm</span></p>
+              <p class="rt font-weight-normal">Recovery Time <span class="badge badge-primary even-larger-badge">Optimal</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2" *ngIf="token">
+      <h1 class="title">
+        <i class="fa fa-spin fa-spinner"></i>
+        Processing...
+      </h1>
+      <div>
+        Status: {{status}}
+      </div>
+    </div>
+  </div>
+</div>

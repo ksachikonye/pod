@@ -1,0 +1,18 @@
+<div class="charts row">
+  <div class="col-6">
+    <app-timeline
+      [data]="sleepData"
+      [label]="'Profile'"
+      [xAccessor]="dateAccessor"
+      [yAccessor]="remAccessor">
+    </app-timeline>
+  </div>
+  <div class="col-6">
+    <app-timeline
+      [data]="sleepData"
+      [label]="'Profile'"
+      [xAccessor]="dateAccessor"
+      [yAccessor]="deepAccessor">
+    </app-timeline>
+  </div>
+</div>
